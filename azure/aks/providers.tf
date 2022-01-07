@@ -23,7 +23,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.aks.cluster_ca_certificate)
 }
 
-
 provider "helm" {
   kubernetes {
     host                   = module.aks.host
