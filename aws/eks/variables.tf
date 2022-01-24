@@ -1,13 +1,6 @@
-
-
 ################################################################################
 # VAULT PROVISONER VARIABLES
 ################################################################################
-variable vault_secret_path {
-  type    = string
-  default = "kv/aws"
-}
-
 variable vault_url {
   type    = string
   default = "http://vault.local"
@@ -15,7 +8,7 @@ variable vault_url {
 
 variable vault_token {
   type    = string
-  default = "s.GoikUiID3DxiPqjyRXnykIIb"
+  default = ""
 }
 
 variable vautl_tls_verify {
@@ -27,7 +20,7 @@ variable vautl_tls_verify {
 ################################################################################
 variable aws_region {
   type    = string
-  default = "us-east-1"
+  default = "us-east-2"
 }
 
 ################################################################################
@@ -36,26 +29,6 @@ variable aws_region {
 variable instance_types {
   type    = list(string)
   default = ["t3.large"]
-}
-
-################################################################################
-# EKS Module Variables
-################################################################################
-variable map_roles {
-  description = "Additional IAM roles to add to the aws-auth configmap"
-  type = list(object({
-    rolearn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-  default = [
-    {
-      rolearn  = "arn:aws:iam::707467741717:policy/admins"
-      username = "role1"
-      groups   = ["system:masters"]
-    },
-  ]
 }
 
 ################################################################################

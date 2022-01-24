@@ -4,56 +4,52 @@ locals {
   region          = var.aws_region
 }
 
-################################################################################
-# EKS Module
-################################################################################
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
+  version = "18.2.2"
 
   cluster_name    = local.name
   cluster_version = local.cluster_version
 
   vpc_id          = module.vpc.vpc_id
-  subnets         = module.vpc.private_subnets
+  subnet_ids      = module.vpc.private_subnets
 
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
-  node_groups = {
+
+  eks_managed_node_groups = {
     milestones = {
-      desired_capacity = 1
-      max_capacity     = 2
-      min_capacity     = 1
+      name             = "milestones"
+      desired_size = 1
+      max_size     = 2
+      min_size     = 1
       instance_types = var.instance_types
 
-      additional_tags = {
+      create_launch_template = false
+      launch_template_name   = ""
+
+      tags = {
         ExtraTag = "Node-Group1"
       }
     }
 
     alabama = {
-      desired_capacity = 1
-      max_capacity     = 2
-      min_capacity     = 1
+      desired_size = 1
+      max_size     = 2
+      min_size     = 1
       instance_types = var.instance_types
 
-      additional_tags = {
+      create_launch_template = false
+      launch_template_name   = ""
+
+      tags = {
         ExtraTag = "Node-Group2"
       }
     }
   }
-
-  map_roles    = var.map_roles
-  tags = {
-    Example    = local.name
-    GithubRepo = "terraform-aws-eks"
-    GithubOrg  = "terraform-aws-modules"
-  }
 }
 
-################################################################################
-# Supporting resources
-################################################################################
 
 data "aws_availability_zones" "available" {
 }
